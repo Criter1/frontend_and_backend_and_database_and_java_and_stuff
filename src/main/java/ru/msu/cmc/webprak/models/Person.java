@@ -12,12 +12,12 @@ import java.util.Objects;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Person {
+public class Person implements CommonEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, name = "id")
-    private long id;
+    private Long id;
 
     @Column(nullable = false, name = "name")
     @NonNull
@@ -40,5 +40,15 @@ public class Person {
                 && name.equals(other.name)
                 && phone.equals(other.phone)
                 && Objects.equals(address, other.address);
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long aLong) {
+        id = aLong;
     }
 }

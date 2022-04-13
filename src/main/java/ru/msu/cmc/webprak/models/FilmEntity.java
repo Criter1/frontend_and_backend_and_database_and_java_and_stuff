@@ -12,7 +12,7 @@ import java.util.Objects;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class FilmEntity {
+public class FilmEntity implements CommonEntity<Long> {
     public enum carrier {
         NO_CARRIER,
         CASSETE,
@@ -23,19 +23,18 @@ public class FilmEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, name = "id")
-    private long id;
+    private Long id;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "film_id")
     @ToString.Exclude
-    @NonNull
-    private Person film_id;
+    private Film film_id;
 
     @Column(name = "carrier_type")
     private carrier carrier_type;
 
     @Column(name = "is_vacant")
-    private boolean is_vacant;
+    private Boolean is_vacant;
 
     @Override
     public boolean equals(Object o) {
@@ -46,5 +45,15 @@ public class FilmEntity {
                 && Objects.equals(film_id, other.film_id)
                 && Objects.equals(carrier_type, other.carrier_type)
                 && Objects.equals(is_vacant, other.is_vacant);
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long aLong) {
+        id = aLong;
     }
 }

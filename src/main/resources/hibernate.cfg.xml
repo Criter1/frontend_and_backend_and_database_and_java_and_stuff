@@ -6,11 +6,11 @@
     <session-factory>
         <!-- Database connection settings -->
         <property name="connection.driver_class">org.postgresql.Driver</property>
-        <property name="connection.url">jdbc:postgresql://localhost/Website</property>
+        <property name="connection.url">jdbc:postgresql://localhost:5432/jwpdb</property>
         <property name="connection.username">postgres</property>
         <property name="connection.password">123456</property>
         <property name="show_sql">true</property>
-
+        <property name="hibernate.current_session_context_class">org.hibernate.context.internal.ThreadLocalSessionContext</property>
         <mapping class="ru.msu.cmc.webprak.models.Person"/>
         <mapping class="ru.msu.cmc.webprak.models.Film"/>
         <mapping class="ru.msu.cmc.webprak.models.FilmEntity"/>

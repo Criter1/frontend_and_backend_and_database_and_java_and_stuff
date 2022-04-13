@@ -3,6 +3,7 @@ package ru.msu.cmc.webprak.models;
 import lombok.*;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.util.Objects;
 
 @Entity
@@ -12,32 +13,28 @@ import java.util.Objects;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class FilmRecord {
+public class FilmRecord implements CommonEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, name = "id")
-    private long id;
+    private Long id;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_person")
     @ToString.Exclude
-    @NonNull
     private Person id_person;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_film_entity")
     @ToString.Exclude
-    @NonNull
     private FilmEntity id_film_entity;
 
-    @Column(nullable = false, name = "date_given")
-    @NonNull
-    private String date_given;
+    @Column(name = "date_given")
+    private java.util.Date date_given;
 
-    @Column(nullable = false, name = "date_recieved")
-    @NonNull
-    private String date_recieved;
+    @Column(name = "date_recieved")
+    private java.util.Date date_recieved;
 
     @Column(nullable = false, name = "price")
     @NonNull
@@ -54,5 +51,15 @@ public class FilmRecord {
                 && Objects.equals(date_given, other.date_given)
                 && Objects.equals(date_recieved, other.date_recieved)
                 && Objects.equals(price, other.price);
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long aLong) {
+        id = aLong;
     }
 }

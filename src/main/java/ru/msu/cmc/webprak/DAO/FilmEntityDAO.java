@@ -4,11 +4,6 @@ import ru.msu.cmc.webprak.models.FilmEntity;
 
 import java.util.List;
 
-public interface FilmEntityDAO {
-    void addFilmEntity(FilmEntity filmEntity);
-    void updateFilmEntity(FilmEntity filmEntity);
-    void deleteFilmEntity(FilmEntity filmEntity);
+public interface FilmEntityDAO extends CommonDAO<FilmEntity, Long> {
 
-    FilmEntity getFilmEntityById(Long filmEntityId);
-    List<FilmEntity> getFilmEntityAll();
 }

@@ -12,12 +12,12 @@ import java.util.Objects;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Film {
+public class Film implements CommonEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, name = "id")
-    private long id;
+    private Long id;
 
     @Column(nullable = false, name = "name")
     @NonNull
@@ -55,5 +55,14 @@ public class Film {
                 && Objects.equals(cassete_price, other.cassete_price)
                 && Objects.equals(disk_price, other.disk_price)
                 && Objects.equals(year, other.year);
+    }
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long aLong) {
+        id = aLong;
     }
 }
