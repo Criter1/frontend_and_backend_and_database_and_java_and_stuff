@@ -22,15 +22,15 @@ CREATE TABLE person(
 
 CREATE TABLE film_entity(
   id SERIAL PRIMARY KEY,
-  film_id INTEGER REFERENCES film (id),
+  film_id INTEGER REFERENCES film (id) ON DELETE CASCADE,
   carrier_type INTEGER,
   is_vacant BOOLEAN
 );
 
 CREATE TABLE film_record(
   id SERIAL PRIMARY KEY,
-  id_person INTEGER REFERENCES person (id),
-  id_film_entity INTEGER REFERENCES film_entity (id),
+  id_person INTEGER REFERENCES person (id) ON DELETE CASCADE,
+  id_film_entity INTEGER REFERENCES film_entity (id) ON DELETE CASCADE,
   date_given timestamp,
   date_recieved timestamp,
   price numeric

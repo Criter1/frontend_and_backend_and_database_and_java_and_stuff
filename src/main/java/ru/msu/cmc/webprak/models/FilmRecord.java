@@ -3,7 +3,6 @@ package ru.msu.cmc.webprak.models;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.util.Objects;
 
 @Entity
