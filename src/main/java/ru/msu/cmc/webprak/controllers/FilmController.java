@@ -61,7 +61,7 @@ public class FilmController {
     public void addFilm(@RequestBody String body) throws ParseException {
         JSONParser parser = new JSONParser();
         JSONObject o = (JSONObject) parser.parse(body);
-        Long id = Long.parseLong((String) o.get("id"));
+        Long id = (Long) o.get("id");
         Film film = filmDAO.getById(id);
         boolean is_new = false;
         if (film == null) {

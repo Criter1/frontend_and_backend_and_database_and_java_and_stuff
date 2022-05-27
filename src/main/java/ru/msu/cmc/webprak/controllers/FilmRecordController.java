@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.msu.cmc.webprak.DAO.FilmEntityDAO;
 import ru.msu.cmc.webprak.DAO.FilmRecordDAO;
 import ru.msu.cmc.webprak.DAO.PersonDAO;
+import ru.msu.cmc.webprak.models.FilmEntity;
 import ru.msu.cmc.webprak.models.FilmRecord;
 
 import java.text.DateFormat;
@@ -21,6 +22,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -44,7 +46,28 @@ public class FilmRecordController {
             o.put("id_person", filmRecord.getId_person().getId());
             o.put("id_film_entity", filmRecord.getId_film_entity().getId());
             o.put("date_given", filmRecord.getDate_given().toString().split(" ")[0]);
-            o.put("date_recieved", filmRecord.getDate_recieved().toString().split(" ")[0]);
+            java.util.Date date = filmRecord.getDate_recieved();
+            if (date != null) o.put("date_recieved", filmRecord.getDate_recieved().toString().split(" ")[0]);
+            else o.put("date_recieved", "null");
+            o.put("price", filmRecord.getPrice());
+            message.add(o);
+        }
+        return message.toJSONString();
+    }
+
+    @GetMapping("/person/{filmRecord_id}")
+    public String getFilmEntitys(@PathVariable("filmRecord_id") long filmRecordID) {
+        List<FilmRecord> filmRecordList = filmRecordDAO.getFilmRecordsByPersonID(filmRecordID);
+        JSONArray message = new JSONArray();
+        for (FilmRecord filmRecord : filmRecordList) {
+            JSONObject o = new JSONObject();
+            o.put("id", filmRecord.getId());
+            o.put("id_person", filmRecord.getId_person().getId());
+            o.put("id_film_entity", filmRecord.getId_film_entity().getId());
+            o.put("date_given", filmRecord.getDate_given().toString().split(" ")[0]);
+            java.util.Date date = filmRecord.getDate_recieved();
+            if (date != null) o.put("date_recieved", filmRecord.getDate_recieved().toString().split(" ")[0]);
+            else o.put("date_recieved", "null");
             o.put("price", filmRecord.getPrice());
             message.add(o);
         }
@@ -59,7 +82,9 @@ public class FilmRecordController {
         o.put("id_person", filmRecord.getId_person().getId());
         o.put("id_film_entity", filmRecord.getId_film_entity().getId());
         o.put("date_given", filmRecord.getDate_given().toString().split(" ")[0]);
-        o.put("date_recieved", filmRecord.getDate_recieved().toString().split(" ")[0]);
+        java.util.Date date = filmRecord.getDate_recieved();
+        if (date != null) o.put("date_recieved", filmRecord.getDate_recieved().toString().split(" ")[0]);
+        else o.put("date_recieved", "null");
         o.put("price", filmRecord.getPrice());
         return o.toJSONString();
     }
@@ -82,12 +107,15 @@ public class FilmRecordController {
             filmRecord = new FilmRecord();
             filmRecord.setId(id);
         }
-        DateFormat formatter = new SimpleDateFormat("yyyy-dd-MM");
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         filmRecord.setId_person(personDAO.getById(Long.parseLong((String) o.get("id_person"))));
-        filmRecord.setId_film_entity(filmEntityDAO.getById(Long.parseLong((String) o.get("id_film_entity"))));
+        FilmEntity fe = filmEntityDAO.getById(Long.parseLong((String) o.get("id_film_entity")));
+        filmRecord.setId_film_entity(fe);
         filmRecord.setPrice(Float.parseFloat((String) o.get("price")));
         filmRecord.setDate_given(formatter.parse((String) o.get("date_given")));
-        filmRecord.setDate_recieved(formatter.parse((String) o.get("date_recieved")));
+        String date_recieved = (String) o.get("date_recieved");
+        if (!Objects.equals(date_recieved, "null")) filmRecord.setDate_recieved(formatter.parse(date_recieved));
+        else filmRecord.setDate_recieved(null);
         if (is_new) filmRecordDAO.save(filmRecord);
         else filmRecordDAO.update(filmRecord);
     }

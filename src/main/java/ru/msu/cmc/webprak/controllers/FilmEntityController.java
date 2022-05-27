@@ -30,7 +30,44 @@ public class FilmEntityController {
             JSONObject o = new JSONObject();
             o.put("id", filmEntity.getId().toString());
             o.put("film_id", filmEntity.getFilm_id().getId());
-            o.put("carrier_type", filmEntity.getCarrier_type());
+            FilmEntity.carrier carrier_type_t = filmEntity.getCarrier_type();
+            Long carrier_type = 0L;
+            if (carrier_type_t == FilmEntity.carrier.NO_CARRIER) {
+                carrier_type = 0L;
+            } else if (carrier_type_t == FilmEntity.carrier.CASSETE) {
+                carrier_type = 1L;
+            } else if (carrier_type_t == FilmEntity.carrier.DISK) {
+                carrier_type = 2L;
+            } else if (carrier_type_t == FilmEntity.carrier.CASSETE_AND_DISK) {
+                carrier_type = 3L;
+            }
+            o.put("carrier_type", carrier_type);
+            o.put("is_vacant", filmEntity.getIs_vacant());
+            message.add(o);
+        }
+        return message.toJSONString();
+    }
+
+    @GetMapping("/film/{film_id}")
+    public String getFilmEntitiesByFilmID(@PathVariable("film_id") Long filmID) {
+        List<FilmEntity> filmEntityListAll = filmEntityDAO.getFilmEntitiesByFilmID(filmID);
+        JSONArray message = new JSONArray();
+        for (FilmEntity filmEntity : filmEntityListAll) {
+            JSONObject o = new JSONObject();
+            o.put("id", filmEntity.getId().toString());
+            o.put("film_id", filmEntity.getFilm_id().getId());
+            FilmEntity.carrier carrier_type_t = filmEntity.getCarrier_type();
+            Long carrier_type = 0L;
+            if (carrier_type_t == FilmEntity.carrier.NO_CARRIER) {
+                carrier_type = 0L;
+            } else if (carrier_type_t == FilmEntity.carrier.CASSETE) {
+                carrier_type = 1L;
+            } else if (carrier_type_t == FilmEntity.carrier.DISK) {
+                carrier_type = 2L;
+            } else if (carrier_type_t == FilmEntity.carrier.CASSETE_AND_DISK) {
+                carrier_type = 3L;
+            }
+            o.put("carrier_type", carrier_type);
             o.put("is_vacant", filmEntity.getIs_vacant());
             message.add(o);
         }
@@ -43,7 +80,18 @@ public class FilmEntityController {
         JSONObject o = new JSONObject();
         o.put("id", filmEntity.getId().toString());
         o.put("film_id", filmEntity.getFilm_id().getId());
-        o.put("carrier_type", filmEntity.getCarrier_type());
+        FilmEntity.carrier carrier_type_t = filmEntity.getCarrier_type();
+        Long carrier_type = 0L;
+        if (carrier_type_t == FilmEntity.carrier.NO_CARRIER) {
+            carrier_type = 0L;
+        } else if (carrier_type_t == FilmEntity.carrier.CASSETE) {
+            carrier_type = 1L;
+        } else if (carrier_type_t == FilmEntity.carrier.DISK) {
+            carrier_type = 2L;
+        } else if (carrier_type_t == FilmEntity.carrier.CASSETE_AND_DISK) {
+            carrier_type = 3L;
+        }
+        o.put("carrier_type", carrier_type);
         o.put("is_vacant", filmEntity.getIs_vacant());
         return o.toJSONString();
     }

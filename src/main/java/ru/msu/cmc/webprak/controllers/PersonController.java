@@ -55,7 +55,7 @@ public class PersonController {
     public void addPerson(@RequestBody String body) throws ParseException {
         JSONParser parser = new JSONParser();
         JSONObject o = (JSONObject) parser.parse(body);
-        Long id = Long.parseLong((String) o.get("id"));
+        Long id = (Long) o.get("id");
         Person person = personDAO.getById(id);
         boolean is_new = false;
         if (person == null) {
